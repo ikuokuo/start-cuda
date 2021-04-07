@@ -1,0 +1,18 @@
+{
+  "env": {
+    "myDefaultIncludePath": [
+      "${workspaceFolder}",
+      "${workspaceFolder}/include"
+    ]
+  },
+  "configurations": [
+    {
+      "name": "Linux",
+      "includePath": [
+        "${myDefaultIncludePath}",
+        "/usr/local/cuda/include"
+      ]
+    }
+  ],
+  "version": 4
+}
