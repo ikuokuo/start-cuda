@@ -51,6 +51,8 @@ find_package(Threads REQUIRED)
 ## cuda
 
 find_package(CUDAToolkit REQUIRED)
+status_var(CUDAToolkit_INCLUDE_DIRS)
+status_var(CUDAToolkit_LIBRARY_DIR)
 
 ## opencv
 
@@ -66,6 +68,7 @@ add_definitions(-DTIME_COST)
 
 include_directories(
   include
+  ${CUDAToolkit_INCLUDE_DIRS}
   ${OpenCV_INCLUDE_DIRS}
 )
 
