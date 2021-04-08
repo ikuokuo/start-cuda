@@ -75,7 +75,7 @@ void gpu_grayscale(uint8_t * const rgb8_pixels, int rgb8_size,
   #define MY_DATA_DIR STRINGIFY(MY_SAMPLES_DIR)"/data"
 #endif
 #ifndef MY_OUTPUT_DIR
-  #define MY_OUTPUT_DIR STRINGIFY(MY_SAMPLES_DIR)"/_output"
+  #define MY_OUTPUT_DIR STRINGIFY(MY_SAMPLES_DIR)
 #endif
 
 int main(int argc, char const *argv[]) {
