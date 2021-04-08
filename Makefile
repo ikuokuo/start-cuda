@@ -23,6 +23,8 @@ CMAKE_OPTIONS ?= \
 MAKE ?= make
 MAKE_OPTIONS ?= -j$$(nproc)
 
+OPENCV_DIR ?= ${HOME}/opencv-4/lib/cmake
+
 # Functions
 
 define echo
@@ -54,7 +56,9 @@ build: clean build_
 .PHONY: build_
 build_:
 	@$(call md,$(BUILD_DIR))
-	@cd $(BUILD_DIR); \
+	@[ -z "$$OpenCV_DIR" ] && export OpenCV_DIR=${OPENCV_DIR}; \
+	echo OpenCV_DIR: $$OpenCV_DIR; \
+	cd $(BUILD_DIR); \
 	$(CMAKE) $(CMAKE_OPTIONS) ..; \
 	$(MAKE) $(MAKE_OPTIONS)
 

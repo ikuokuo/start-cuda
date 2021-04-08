@@ -1,7 +1,18 @@
 # Samples
 
+## Install
+
+Depends:
+
 ```bash
-sudo apt-get install -y libboost-all-dev libjpeg-dev
+sudo apt install -y libboost-all-dev libjpeg-dev
+```
+
+OpenCV:
+
+```bash
+$ vi conf.mk
+OPENCV_PATH ?= $(HOME)/opencv-4
 ```
 
 <!--
@@ -10,16 +21,22 @@ dpkg -L libboost-all-dev
 whereis boost
 -->
 
-## Build
+### Build
 
 ```bash
 ./build.sh
 ```
 
-Or, `make` in root directory.
+Or, `make` in root directory (using cmake).
 
-## Clean
+### Clean
 
 ```bash
 ./clean.sh
 ```
+
+## References
+
+- [CUDA Toolkit Documentation](https://docs.nvidia.com/cuda/)
+- CUDA API References
+  - [NPP](https://docs.nvidia.com/cuda/npp/index.html)

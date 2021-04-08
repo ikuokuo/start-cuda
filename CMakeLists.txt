@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.20)
 project(start_cuda VERSION 1.0.0 LANGUAGES C CXX CUDA)
 
 include(cmake/global.cmake)
@@ -48,6 +48,16 @@ LIST(APPEND CMAKE_MODULE_PATH "${MY_ROOT}/cmake/modules")
 
 find_package(Threads REQUIRED)
 
+## cuda
+
+find_package(CUDAToolkit REQUIRED)
+
+## opencv
+
+find_package(OpenCV 4 REQUIRED)
+status_var(OpenCV_INCLUDE_DIRS)
+status_var(OpenCV_LIBS)
+
 # configs
 
 add_definitions(-DTIME_COST)
@@ -56,6 +66,7 @@ add_definitions(-DTIME_COST)
 
 include_directories(
   include
+  ${OpenCV_INCLUDE_DIRS}
 )
 
 set(MY_OUTPUT "${MY_ROOT}/_output")

@@ -17,3 +17,23 @@ Books:
 - [Professional CUDA C Programming](http://www.hds.bme.hu/~fhegedus/C++/Professional%20CUDA%20C%20Programming.pdf)
   - [Source Code](https://github.com/deeperlearning/professional-cuda-c-programming)
 - [CUDA by Example](http://developer.download.nvidia.com/books/cuda-by-example/cuda-by-example-sample.pdf)
+
+## Build
+
+```bash
+sudo apt install -y build-essential cmake git
+
+# depends
+sudo apt install -y libboost-all-dev libjpeg-dev
+# install opencv
+#  https://github.com/ikuokuo/start-opencv
+export OpenCV_DIR=$HOME/opencv-4/lib/cmake
+
+git clone https://github.com/ikuokuo/start-cuda.git
+cd start-cuda/
+make
+```
+
+## Tutorials
+
+- [CUDA 快速入门](docs/samples/quick_start.md)

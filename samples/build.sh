@@ -17,6 +17,7 @@ function build() {
 subdirs=(
   quick_start
   img_proc
+  npp
 )
 
 for subdir in "${subdirs[@]}"; do

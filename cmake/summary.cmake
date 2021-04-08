@@ -8,11 +8,13 @@ status("  HOST_COMPILER: ${CMAKE_CXX_COMPILER_ID}")
 status("    COMPILER_VERSION: ${CMAKE_CXX_COMPILER_VERSION}")
 
 status("")
-status("Build:")
-status("  Samples: " IF BUILD_SAMPLES "YES" ELSE "NO")
+status("Package:")
+status("  CUDAToolkit: " IF CUDAToolkit_FOUND "${CUDAToolkit_VERSION}" ELSE "NO")
+status("    CUDA_ARCHITECTURES: ${CMAKE_CUDA_ARCHITECTURES}")
+status("  OpenCV: " IF OpenCV_FOUND "${OpenCV_VERSION}" ELSE "NO")
 
 status("")
-status("CUDA:")
-status("  ARCHITECTURES: ${CMAKE_CUDA_ARCHITECTURES}")
+status("Build:")
+status("  Samples: " IF BUILD_SAMPLES "YES" ELSE "NO")
 
 status("")

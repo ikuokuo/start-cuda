@@ -10,7 +10,8 @@
       "name": "Linux",
       "includePath": [
         "${myDefaultIncludePath}",
-        "/usr/local/cuda/include"
+        "/usr/local/cuda/include",
+        "${HOME}/opencv-4/include/opencv4"
       ]
     }
   ],
