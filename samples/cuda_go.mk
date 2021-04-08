@@ -1,22 +1,22 @@
 MK_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 MK_DIR := $(patsubst %/,%,$(dir $(MK_PATH)))
 
-INCLUDE_DIR := $(MK_DIR)/../include/
-COMMON_FILES := $(wildcard $(INCLUDE_DIR)/common/*.hpp)
-
-EXTRA_NVCCFLAGS ?= -std=c++11
-
 include $(MK_DIR)/cuda.mk
 
-INCLUDES += -I$(INCLUDE_DIR)
+INCLUDE_DIR := $(MK_DIR)/../include/
+INCLUDE_COMM_FILES := $(wildcard $(INCLUDE_DIR)/common/*.hpp)
+
+COMM_CCFLAGS := -I$(INCLUDE_DIR)
+HOST_CCFLAGS += $(COMM_CCFLAGS)
+NVCC_CCFLAGS += $(COMM_CCFLAGS)
+
+COMM_LDFLAGS :=
+HOST_LDFLAGS += $(COMM_LDFLAGS)
+NVCC_LDFLAGS += $(COMM_LDFLAGS)
 
 TGT_DIR := $(BUILD_TYPE)/$(TARGET_OS)-$(TARGET_ARCH)
 BIN_DIR ?= $(MK_DIR)/$(TGT_DIR)/bin
 OBJ_DIR ?= $(MK_DIR)/$(TGT_DIR)/obj
-
-# host compiler
-HOST_CCFLAGS ?= -std=c++11
-HOST_LDFLAGS ?= $(HOST_CCFLAGS)
 
 define echo
 	text="$1"; options="$2"; \
@@ -27,25 +27,25 @@ endef
 define cu2obj
 	@$(call echo,$@ < $<)
 	$(EXEC) @mkdir -p $(OBJ_DIR)
-	$(EXEC) $(NVCC) $(INCLUDES) $(ALL_CCFLAGS) $(GENCODE_FLAGS) $1 -o $@ -c $<
+	$(EXEC) $(NVCC) $(NVCC_CCFLAGS) $(GENCODE_FLAGS) -c $< -o $@
 endef
 
 define cuobj2bin
-	@$(call echo,$@ < $<)
+	@$(call echo,$@ < $^)
 	$(EXEC) @mkdir -p $(BIN_DIR)
-	$(EXEC) $(NVCC) $(ALL_LDFLAGS) $(GENCODE_FLAGS) $1 -o $@ $+ $(LIBRARIES)
+	$(EXEC) $(NVCC) $(NVCC_LDFLAGS) $(GENCODE_FLAGS) $^ -o $@
 endef
 
 define cc2obj
 	@$(call echo,$@ < $<)
 	$(EXEC) @mkdir -p $(OBJ_DIR)
-	$(EXEC) $(HOST_COMPILER) $(INCLUDES) $(HOST_CCFLAGS) $1 -o $@ -c $<
+	$(EXEC) $(HOST_COMPILER) $(HOST_CCFLAGS) -c $< -o $@
 endef
 
 define ccobj2bin
-	@$(call echo,$@ < $<)
+	@$(call echo,$@ < $^)
 	$(EXEC) @mkdir -p $(BIN_DIR)
-	$(EXEC) $(HOST_COMPILER) $(HOST_LDFLAGS) $1 -o $@ $+
+	$(EXEC) $(HOST_COMPILER) $^ $(HOST_LDFLAGS) -o $@
 endef
 
 define run
@@ -56,8 +56,8 @@ define clean
 	-rm -rf $(BIN_DIR)/$(1) $(OBJ_DIR)/$(1).o
 endef
 
-$(OBJ_DIR)/%.o: %.cu $(COMMON_FILES)
+$(OBJ_DIR)/%.o: %.cu $(INCLUDE_COMM_FILES)
 	$(call cu2obj)
 
-$(OBJ_DIR)/%.o: %.cc $(COMMON_FILES)
+$(OBJ_DIR)/%.o: %.cc $(INCLUDE_COMM_FILES)
 	$(call cc2obj)

@@ -1,5 +1,5 @@
 # Location of the CUDA Toolkit
-CUDA_PATH?=/usr/local/cuda
+CUDA_PATH ?= /usr/local/cuda
 
 ##############################
 # start deprecated interface #
@@ -116,7 +116,7 @@ HOST_COMPILER ?= g++
 NVCC          := $(CUDA_PATH)/bin/nvcc -ccbin $(HOST_COMPILER)
 
 # internal flags
-NVCCFLAGS   := -m${TARGET_SIZE}
+NVCCFLAGS   := -m$(TARGET_SIZE)
 CCFLAGS     :=
 LDFLAGS     :=
 
@@ -155,21 +155,22 @@ else
   BUILD_TYPE := release
 endif
 
-ALL_CCFLAGS :=
-ALL_CCFLAGS += $(NVCCFLAGS)
-ALL_CCFLAGS += $(EXTRA_NVCCFLAGS)
-ALL_CCFLAGS += $(addprefix -Xcompiler ,$(CCFLAGS))
-ALL_CCFLAGS += $(addprefix -Xcompiler ,$(EXTRA_CCFLAGS))
+HOST_CCFLAGS =
+HOST_LDFLAGS =
+
+NVCC_HOST_CCFLAGS =
+NVCC_HOST_LDFLAGS =
+
+NVCC_CCFLAGS =
+NVCC_CCFLAGS += $(NVCCFLAGS)
+NVCC_CCFLAGS += $(addprefix -Xcompiler ,$(CCFLAGS))
+NVCC_CCFLAGS += $(addprefix -Xcompiler ,$(NVCC_HOST_CCFLAGS))
+
+NVCC_LDFLAGS =
+NVCC_LDFLAGS += $(addprefix -Xlinker ,$(LDFLAGS))
+NVCC_LDFLAGS += $(addprefix -Xlinker ,$(NVCC_HOST_LDFLAGS))
 
 SAMPLE_ENABLED := 1
-
-ALL_LDFLAGS :=
-ALL_LDFLAGS += $(ALL_CCFLAGS)
-ALL_LDFLAGS += $(addprefix -Xlinker ,$(LDFLAGS))
-ALL_LDFLAGS += $(addprefix -Xlinker ,$(EXTRA_LDFLAGS))
-
-INCLUDES  :=
-LIBRARIES :=
 
 ################################################################################
 

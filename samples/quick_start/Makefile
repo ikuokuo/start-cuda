@@ -1,10 +1,8 @@
-EXTRA_NVCCFLAGS := -std=c++11 -DTIME_COST
-EXTRA_LDFLAGS :=
-
-HOST_CCFLAGS := -std=c++11 -DTIME_COST
-HOST_LDFLAGS := $(HOST_CCFLAGS)
-
 include ../cuda_go.mk
+
+MY_CCFLAGS := -std=c++14 -DTIME_COST
+HOST_CCFLAGS += $(MY_CCFLAGS)
+NVCC_CCFLAGS += $(MY_CCFLAGS)
 
 .PHONY: all build clean
 
