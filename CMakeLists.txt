@@ -105,7 +105,9 @@ macro(add_sample NAME)
   unset(__outdir)
 endmacro()
 
-add_subdirectory(books)
+if(BUILD_BOOKS)
+  add_subdirectory(books)
+endif()
 
 if(BUILD_SAMPLES)
   add_subdirectory(samples)

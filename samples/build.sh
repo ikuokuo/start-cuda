@@ -16,7 +16,8 @@ function build() {
 
 subdirs=(
   quick_start
-  img_proc
+  matmul
+  #img_proc
   npp
 )
 
