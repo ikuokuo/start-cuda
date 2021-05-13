@@ -9,14 +9,21 @@ NVCC_CCFLAGS += $(MY_CCFLAGS)
 all: build
 
 build: \
+	$(BIN_DIR)/mat_test \
 	$(BIN_DIR)/matmul_cpu \
 	$(BIN_DIR)/matmul_gpu \
 	$(BIN_DIR)/matmul_gpu_shared
 
 clean:
+	$(call clean,mat_test)
 	$(call clean,matmul_cpu)
 	$(call clean,matmul_gpu)
 	$(call clean,matmul_gpu_shared)
+
+# mat_test
+
+$(BIN_DIR)/mat_test: $(OBJ_DIR)/mat_test.o
+	$(call ccobj2bin)
 
 # matmul_cpu
 
