@@ -14,6 +14,10 @@
 
 #include "times.hpp"
 
+#ifndef TIME_PRECISION
+  #define TIME_PRECISION 3
+#endif
+
 namespace times {
 
 class TimeCost {
@@ -26,17 +30,19 @@ class TimeCost {
   std::ostream &ToString(std::ostream &os) const {
     float ms = times::count<std::chrono::microseconds>(elapsed()) * 0.001f;
     os << tag_ << std::endl
-      << "BEG: " << times::to_local_string(beg_) << std::endl
-      << "END: " << times::to_local_string(end_) << std::endl
-      << "COST: " << ms << "ms";
+      << "BEG: " << times::to_local_string(beg_, "%F %T", TIME_PRECISION)
+      << std::endl
+      << "END: " << times::to_local_string(end_, "%F %T", TIME_PRECISION)
+      << std::endl
+      << "COST: " << ms << " ms";
     return os;
   }
 
   std::ostream &ToLineString(std::ostream &os) const {
     float ms = times::count<std::chrono::microseconds>(elapsed()) * 0.001f;
-    os << tag_ << ": " << ms << "ms, "
-      << times::to_local_string(beg_, "%T") << " > "
-      << times::to_local_string(end_, "%T");
+    os << tag_ << ": " << ms << " ms, "
+      << times::to_local_string(beg_, "%T", TIME_PRECISION) << " > "
+      << times::to_local_string(end_, "%T", TIME_PRECISION);
     return os;
   }
 

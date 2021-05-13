@@ -9,6 +9,8 @@
 #include <sstream>
 #include <string>
 
+#include "global.hpp"
+
 namespace times {
 
 using clock = std::chrono::system_clock;
@@ -170,7 +172,7 @@ inline std::string to_string(
     const char *fmt = "%F %T", std::int32_t precision = 6,
     const char &sep = '.') {
   std::stringstream ss;
-#if defined(CL_OS_ANDROID) || defined(CL_OS_LINUX)
+#if defined(IK_OS_ANDROID) || defined(IK_OS_LINUX)
   char foo[30];
   strftime(foo, sizeof(foo), fmt, tm);
   ss << foo;
@@ -190,13 +192,13 @@ inline std::string to_string(
 
 inline std::string to_local_string(
     const clock::time_point &t, const char *fmt = "%F %T",
-    const std::int32_t &precision = 0, const char &sep = '.') {
+    const std::int32_t &precision = 3, const char &sep = '.') {
   return to_string(t, to_local_tm(t), fmt, precision, sep);
 }
 
 inline std::string to_utc_string(
     const clock::time_point &t, const char *fmt = "%F %T",
-    const std::int32_t &precision = 0, const char &sep = '.') {
+    const std::int32_t &precision = 3, const char &sep = '.') {
   return to_string(t, to_utc_tm(t), fmt, precision, sep);
 }
 
