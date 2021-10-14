@@ -2,12 +2,6 @@
 
 ## Install
 
-Depends:
-
-```bash
-sudo apt install -y libboost-all-dev libjpeg-dev
-```
-
 OpenCV:
 
 ```bash
@@ -20,6 +14,13 @@ dpkg -s libboost-all-dev
 dpkg -L libboost-all-dev
 whereis boost
 -->
+
+Depends:
+
+```bash
+# only for samples/img_proc, if enable build in samples/build.sh or samples/CMakeLists.txt
+sudo apt install -y libboost-all-dev libjpeg-dev
+```
 
 ### Build
 

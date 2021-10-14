@@ -23,8 +23,9 @@ Books:
 ```bash
 sudo apt install -y build-essential cmake git
 
-# depends
-sudo apt install -y libboost-all-dev libjpeg-dev
+# depends (only for samples/img_proc)
+# sudo apt install -y libboost-all-dev libjpeg-dev
+
 # install opencv
 #  https://github.com/ikuokuo/start-opencv
 export OpenCV_DIR=$HOME/opencv-4/lib/cmake
@@ -36,4 +37,9 @@ make
 
 ## Tutorials
 
-- [CUDA 快速入门](docs/samples/quick_start.md)
+- <s>[books](/books)</s>
+- [samples](/samples)
+  - [quick_start](/samples/quick_start) - [CUDA 快速入门](docs/samples/quick_start.md)
+  - [matmul](/samples/matmul)
+  - [npp](/samples/npp)
+  - [nvjpeg](/samples/nvjpeg)
