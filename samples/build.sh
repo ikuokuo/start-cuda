@@ -19,6 +19,7 @@ subdirs=(
   matmul
   #img_proc
   npp
+  nvjpeg
 )
 
 for subdir in "${subdirs[@]}"; do
