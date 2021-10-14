@@ -59,7 +59,7 @@ class TimingImpl : public Timing {
          << split_label << std::endl;
     }
     os << label_ << ": end, "
-       << duration_cast<milliseconds>(now - first).count() << " ms"
+       << duration_cast<milliseconds>(clock::now() - first).count() << " ms"
        << std::endl;
   }
 

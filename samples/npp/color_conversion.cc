@@ -9,20 +9,7 @@
 #include <opencv2/imgproc.hpp>
 
 #include "common/timing.hpp"
-
-#ifndef STR
-  #define STR(x) #x
-#endif
-#ifndef STRINGIFY
-  #define STRINGIFY(x) STR(x)
-#endif
-
-#ifndef MY_DATA_DIR
-  #define MY_DATA_DIR STRINGIFY(MY_SAMPLES_DIR)"/data"
-#endif
-#ifndef MY_OUTPUT_DIR
-  #define MY_OUTPUT_DIR STRINGIFY(MY_SAMPLES_DIR)
-#endif
+#include "../samples.hpp"
 
 namespace {
 

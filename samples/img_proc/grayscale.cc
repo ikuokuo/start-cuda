@@ -8,6 +8,7 @@
 #include <boost/gil/extension/io/jpeg_dynamic_io.hpp>
 
 #include "common/times.hpp"
+#include "../samples.hpp"
 
 namespace {
 
@@ -62,21 +63,6 @@ void cpu_grayscale(uint8_t * const rgb8_pixels, int rgb8_size,
 
 void gpu_grayscale(uint8_t * const rgb8_pixels, int rgb8_size,
                    uint8_t * const gray8_pixels, int gray8_size);
-
-// http://stackoverflow.com/questions/2410976/how-to-define-a-string-literal-in-gcc-command-line
-#ifndef STR
-  #define STR(x) #x
-#endif
-#ifndef STRINGIFY
-  #define STRINGIFY(x) STR(x)
-#endif
-
-#ifndef MY_DATA_DIR
-  #define MY_DATA_DIR STRINGIFY(MY_SAMPLES_DIR)"/data"
-#endif
-#ifndef MY_OUTPUT_DIR
-  #define MY_OUTPUT_DIR STRINGIFY(MY_SAMPLES_DIR)
-#endif
 
 int main(int argc, char const *argv[]) {
   using namespace std;  // NOLINT
