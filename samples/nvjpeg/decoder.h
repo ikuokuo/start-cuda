@@ -9,7 +9,7 @@
 {                                                                              \
   cudaError_t _e = (call);                                                     \
   if (_e != cudaSuccess) {                                                     \
-    std::cout << "CUDA Runtime failure: '#" << _e << "' at " <<  __FILE__      \
+    std::cerr << "CUDA Runtime failure: '#" << _e << "' at " <<  __FILE__      \
         << ":" << __LINE__ << std::endl;                                       \
     exit(1);                                                                   \
   }                                                                            \
@@ -19,7 +19,7 @@
 {                                                                              \
   nvjpegStatus_t _e = (call);                                                  \
   if (_e != NVJPEG_STATUS_SUCCESS) {                                           \
-    std::cout << "NVJPEG failure: '#" << _e << "' at " <<  __FILE__            \
+    std::cerr << "NVJPEG failure: '#" << _e << "' at " <<  __FILE__            \
         << ":" << __LINE__ << std::endl;                                       \
     exit(1);                                                                   \
   }                                                                            \
@@ -27,8 +27,8 @@
 
 inline int dev_malloc(void **p, size_t s) { return (int)cudaMalloc(p, s); }
 inline int dev_free(void *p) { return (int)cudaFree(p); }
-inline int host_malloc(void** p, size_t s, unsigned int f) { return (int)cudaHostAlloc(p, s, f); }  // NOLINT
-inline int host_free(void* p) { return (int)cudaFreeHost(p); }
+inline int host_malloc(void **p, size_t s, unsigned int f) { return (int)cudaHostAlloc(p, s, f); }  // NOLINT
+inline int host_free(void *p) { return (int)cudaFreeHost(p); }
 
 class NvJpegDecoder {
  public:
@@ -36,19 +36,9 @@ class NvJpegDecoder {
     dev_allocator_ = {&dev_malloc, &dev_free};
     pinned_allocator_ = {&host_malloc, &host_free};
 
-    nvjpegStatus_t status = nvjpegCreateEx(NVJPEG_BACKEND_HARDWARE,
+    CHECK_NVJPEG(nvjpegCreateEx(NVJPEG_BACKEND_DEFAULT,
         &dev_allocator_, &pinned_allocator_, NVJPEG_FLAGS_DEFAULT,
-        &nvjpeg_handle_);
-    hw_decode_available_ = true;
-    if (status == NVJPEG_STATUS_ARCH_MISMATCH) {
-      std::cout << "Hardware Decoder not supported. Falling back to default backend" << std::endl;  // NOLINT
-      CHECK_NVJPEG(nvjpegCreateEx(NVJPEG_BACKEND_DEFAULT,
-          &dev_allocator_, &pinned_allocator_, NVJPEG_FLAGS_DEFAULT,
-          &nvjpeg_handle_));
-      hw_decode_available_ = false;
-    } else {
-      CHECK_NVJPEG(status);
-    }
+        &nvjpeg_handle_));
     CHECK_NVJPEG(nvjpegJpegStateCreate(nvjpeg_handle_, &nvjpeg_state_));
     CHECK_CUDA(cudaStreamCreateWithFlags(&stream_, cudaStreamNonBlocking));
 
@@ -102,39 +92,39 @@ class NvJpegDecoder {
     *out_w = widths[0];
     *out_h = heights[0];
 
-    // print image info below
+    {  // print image info below
+      std::cout << "Image is " << channels << " channels." << std::endl;
+      for (int c = 0; c < channels; c++) {
+        std::cout << "Channel #" << c << " size: " << widths[c] << " x "
+                  << heights[c] << std::endl;
+      }
 
-    std::cout << "Image is " << channels << " channels." << std::endl;
-    for (int c = 0; c < channels; c++) {
-      std::cout << "Channel #" << c << " size: " << widths[c] << " x "
-                << heights[c] << std::endl;
-    }
-
-    switch (subsampling) {
-      case NVJPEG_CSS_444:
-        std::cout << "YUV 4:4:4 chroma subsampling" << std::endl;
-        break;
-      case NVJPEG_CSS_440:
-        std::cout << "YUV 4:4:0 chroma subsampling" << std::endl;
-        break;
-      case NVJPEG_CSS_422:
-        std::cout << "YUV 4:2:2 chroma subsampling" << std::endl;
-        break;
-      case NVJPEG_CSS_420:
-        std::cout << "YUV 4:2:0 chroma subsampling" << std::endl;
-        break;
-      case NVJPEG_CSS_411:
-        std::cout << "YUV 4:1:1 chroma subsampling" << std::endl;
-        break;
-      case NVJPEG_CSS_410:
-        std::cout << "YUV 4:1:0 chroma subsampling" << std::endl;
-        break;
-      case NVJPEG_CSS_GRAY:
-        std::cout << "Grayscale JPEG " << std::endl;
-        break;
-      case NVJPEG_CSS_UNKNOWN:
-        std::cout << "Unknown chroma subsampling" << std::endl;
-        return EXIT_FAILURE;
+      switch (subsampling) {
+        case NVJPEG_CSS_444:
+          std::cout << "YUV 4:4:4 chroma subsampling" << std::endl;
+          break;
+        case NVJPEG_CSS_440:
+          std::cout << "YUV 4:4:0 chroma subsampling" << std::endl;
+          break;
+        case NVJPEG_CSS_422:
+          std::cout << "YUV 4:2:2 chroma subsampling" << std::endl;
+          break;
+        case NVJPEG_CSS_420:
+          std::cout << "YUV 4:2:0 chroma subsampling" << std::endl;
+          break;
+        case NVJPEG_CSS_411:
+          std::cout << "YUV 4:1:1 chroma subsampling" << std::endl;
+          break;
+        case NVJPEG_CSS_410:
+          std::cout << "YUV 4:1:0 chroma subsampling" << std::endl;
+          break;
+        case NVJPEG_CSS_GRAY:
+          std::cout << "Grayscale JPEG " << std::endl;
+          break;
+        case NVJPEG_CSS_UNKNOWN:
+          std::cout << "Unknown chroma subsampling" << std::endl;
+          return EXIT_FAILURE;
+      }
     }
 
     int mul = 1;
@@ -194,7 +184,6 @@ class NvJpegDecoder {
   nvjpegJpegState_t nvjpeg_state_;
   nvjpegHandle_t nvjpeg_handle_;
   cudaStream_t stream_;
-  bool hw_decode_available_;
 
   // output buffer
   nvjpegImage_t out_buf_;
