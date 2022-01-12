@@ -5,6 +5,10 @@ cmake_include_guard()
 
 include(${CMAKE_CURRENT_LIST_DIR}/global_macros.cmake)
 
+# modules
+
+LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/modules")
+
 # env
 
 include(${CMAKE_CURRENT_LIST_DIR}/common/target_arch.cmake)

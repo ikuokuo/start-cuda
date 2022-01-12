@@ -26,9 +26,13 @@ sudo apt install -y build-essential cmake git
 # depends (only for samples/img_proc)
 # sudo apt install -y libboost-all-dev libjpeg-dev
 
-# install opencv
+# install OpenCV (required)
 #  https://github.com/ikuokuo/start-opencv
 export OpenCV_DIR=$HOME/opencv-4/lib/cmake
+
+# install TensorRT (optional)
+#  https://github.com/NVIDIA/TensorRT
+export TensorRT_ROOT=/usr/local/TensorRT
 
 git clone https://github.com/ikuokuo/start-cuda.git
 cd start-cuda/
@@ -43,3 +47,4 @@ make
   - [matmul](/samples/matmul)
   - [npp](/samples/npp)
   - [nvjpeg](/samples/nvjpeg)
+  - [tensorrt](/samples/tensorrt)

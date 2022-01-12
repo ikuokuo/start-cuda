@@ -54,6 +54,22 @@ find_package(CUDAToolkit REQUIRED)
 status_var(CUDAToolkit_INCLUDE_DIRS)
 status_var(CUDAToolkit_LIBRARY_DIR)
 
+## cudnn
+
+find_package(CUDNN)
+if(CUDNN_FOUND)
+  status_var(CUDNN_INCLUDE_DIRS)
+  status_var(CUDNN_LIBRARIES)
+endif()
+
+## tensorrt
+
+find_package(TensorRT)
+if(TensorRT_FOUND)
+  status_var(TensorRT_INCLUDE_DIRS)
+  status_var(TensorRT_LIBRARIES)
+endif()
+
 ## opencv
 
 find_package(OpenCV 4 REQUIRED)
@@ -69,6 +85,8 @@ add_definitions(-DTIME_COST)
 include_directories(
   include
   ${CUDAToolkit_INCLUDE_DIRS}
+  ${CUDNN_INCLUDE_DIRS}
+  ${TensorRT_INCLUDE_DIRS}
   ${OpenCV_INCLUDE_DIRS}
 )
 

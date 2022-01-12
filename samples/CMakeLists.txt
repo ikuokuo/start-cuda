@@ -6,4 +6,8 @@ add_subdirectory(matmul)
 add_subdirectory(npp)
 add_subdirectory(nvjpeg)
 
+if(TensorRT_FOUND)
+  add_subdirectory(tensorrt)
+endif()
+
 unset(_outdir)

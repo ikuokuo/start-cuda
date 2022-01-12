@@ -11,6 +11,7 @@
       "includePath": [
         "${myDefaultIncludePath}",
         "/usr/local/cuda/include",
+        "/usr/local/TensorRT/include",
         "${HOME}/opencv-4/include/opencv4"
       ]
     }

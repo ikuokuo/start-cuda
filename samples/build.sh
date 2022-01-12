@@ -20,6 +20,7 @@ subdirs=(
   #img_proc
   npp
   nvjpeg
+  tensorrt
 )
 
 for subdir in "${subdirs[@]}"; do
